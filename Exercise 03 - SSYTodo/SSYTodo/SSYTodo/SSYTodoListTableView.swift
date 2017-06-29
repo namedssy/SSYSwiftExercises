@@ -16,6 +16,18 @@ class SSYTodoListTableView: UITableView , UITableViewDelegate , UITableViewDataS
 
     lazy var dataArr = [SSYModel]()
     
+    private lazy var noDataLabel: UILabel = {[unowned self] in
+        
+        let noDataLabel = UILabel()
+        noDataLabel.frame = CGRect(x: 0, y: 0, width: self.width, height: self.height)
+        noDataLabel.text = "No data is currently available."
+        noDataLabel.textColor = UIColor.black
+        noDataLabel.font = UIFont(name:"Palatino-Italic", size: 20)
+        noDataLabel.textAlignment = .center
+        
+        return noDataLabel
+    }()
+    
     var customDelegate: SSYTodoListTabelViewCustomDelegate?
     
     override init(frame: CGRect, style: UITableViewStyle) {
@@ -33,7 +45,15 @@ class SSYTodoListTableView: UITableView , UITableViewDelegate , UITableViewDataS
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataArr.count
+        
+        if dataArr.count == 0 {
+            self.addSubview(noDataLabel)
+            return 0
+        }
+        else {
+            noDataLabel .removeFromSuperview()
+            return dataArr.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
